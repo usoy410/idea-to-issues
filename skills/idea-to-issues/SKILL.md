@@ -1,11 +1,11 @@
 ---
 name: idea-to-issues
-description: Turn a developer's rough idea into well-scoped GitHub issues through a short requirements conversation (interview, play back, slice, confirm, create). Issues get acceptance criteria, dependencies, and the queue label (default ready-for-agent) so issue-orchestration can pick them up. Use when the user wants to turn an idea, feature, or project into issues or tickets.
+description: Turn a developer's rough idea into well-scoped GitHub issues through a guided requirements conversation: choose-or-type questions, understanding checks until agent and developer are in sync, then slicing and issue creation. Issues get acceptance criteria, dependencies, and the queue label (default ready-for-agent) so issue-orchestration can pick them up. Use when the user wants to turn an idea, feature, or project into issues or tickets.
 ---
 
 # Idea to Issues
 
-Requirements gathering, then ticket writing. The developer owns the WHAT and WHY; you own the questions, the slicing, and the wording. Five steps: Ground, Interview, Play back, Slice, Create.
+Requirements gathering, then ticket writing. The developer owns the WHAT and WHY; you own the questions, the slicing, and the wording. Five steps: Ground, Guided interview, Sync check, Slice, Create. The goal is brain sync: before any issue exists, the developer has read your understanding and confirmed it matches theirs.
 
 ## Prerequisites
 
@@ -17,11 +17,16 @@ Requirements gathering, then ticket writing. The developer owns the WHAT and WHY
 
 Before the first question, read what exists so you do not ask what the repo already answers: README, `CONTEXT.md`, `AGENTS.md` / `CLAUDE.md`, `docs/`, the stack (package manifests), and open issues (`gh issue list --state open --limit 50`) to avoid duplicates. New or empty repo: skip and say so.
 
-## 2. Interview
+## 2. Guided interview
 
-A conversation, not a form. One question per message, plain language, anchored in specifics ("walk me through the last time you needed this"). Get them describing before offering options; offer a short menu only when they are stuck, and propose something concrete when they say "you decide".
+Start by asking for the idea in their own words if they have not given it. Then guide with questions, one per message, each answerable in one click or one line:
 
-Cover this ground (never read it out as a checklist):
+- Every question offers 2 to 4 concrete options built from what you know so far (their words, the repo, the stack), plus a free-text "something else" path. Put your recommended option first and say why in a few words.
+- Claude Code: use `AskUserQuestion` (it adds "Other" for typed input; use `multiSelect` when answers can combine). Other agents: a numbered list ending with "or type your own".
+- Options must be real alternatives that change what gets built, not filler. If you cannot think of real options, ask an open question instead.
+- After each answer, say in one line what it changed in your picture ("Got it: exports are per-invoice, not bulk.").
+
+Cover this ground in order of what is most unclear (never read it out as a checklist):
 
 - Problem and who has it; why now.
 - What done looks like: observable outcomes, not implementation.
@@ -30,11 +35,27 @@ Cover this ground (never read it out as a checklist):
 - Edge cases and failure behavior they care about.
 - Priority: what ships first if only one thing could.
 
-Stop interviewing when you could write acceptance criteria for every part without guessing. Usually 4 to 10 questions. "Just write them" from the user: stop now, and mark every unconfirmed assumption in the issues.
+Stop when you could write acceptance criteria for every part without guessing. Usually 4 to 10 questions. "Just write them" from the user: skip to the sync check, with every unconfirmed point marked as an assumption.
 
-## 3. Play back
+## 3. Sync check
 
-Write a short brief (under 300 words) in the chat: problem, users, outcomes, scope in/out, constraints, open questions. Mark your guesses as guesses. Ask what is wrong or missing. Repeat until they agree. Do not slice before agreement.
+Show what you understood, so the developer can see whether you share the same picture. Keep it under 300 words:
+
+```markdown
+## My understanding
+**Problem:** ...
+**For:** ...
+**Done when:** ...
+**In scope:** ...
+**Out of scope:** ...
+**Constraints:** ...
+**First slice:** ...
+
+**I am confident about:** <points they stated>
+**I am guessing:** <points you inferred; each one is a question>
+```
+
+Then ask with options: (1) In sync, slice it (2) Mostly, fix a few points (3) Not quite, let me re-explain. On 2 or 3, ask about the specific gaps (guided again), update the understanding, and show it again. Repeat until they pick "In sync" with nothing left under "I am guessing" that they care about. Never slice before that.
 
 ## 4. Slice
 
@@ -68,7 +89,7 @@ More than 3 issues: also draft one tracking issue (the brief plus a task list of
 
 ## 5. Confirm and create
 
-Show the full draft set in chat: titles, labels, dependency order, and each body. Ask once: create these? Edits come back as changes to the draft, then ask again. This is the only approval step; never create issues before it.
+Show the full draft set in chat: titles, labels, dependency order, and each body. Ask with options: (1) Create all (2) Edit some first (3) Re-slice. Edits come back as changes to the draft, then ask again. This is the only approval step; never create issues before it.
 
 On approval, create in dependency order so `Depends on` can use real numbers:
 

@@ -1,6 +1,6 @@
 # idea-to-issues
 
-Agent skill that turns a developer's rough idea into well-scoped GitHub issues through a short requirements conversation. The output is ready for [software-engineering-orchestration](https://github.com/usoy410/software-engineering-orchestration): issues carry acceptance criteria, dependency order, and the `ready-for-agent` queue label.
+Agent skill that turns a developer's rough idea into well-scoped GitHub issues through a guided requirements conversation. The agent asks choose-or-type questions, plays back what it understood, and repeats until you are both in sync, then writes the issues. The output is ready for [software-engineering-orchestration](https://github.com/usoy410/software-engineering-orchestration): issues carry acceptance criteria, dependency order, and the `ready-for-agent` queue label.
 
 ## Prerequisites
 
@@ -36,10 +36,12 @@ idea
 ground     read README, CONTEXT.md, docs, stack, open issues
   |
   v
-interview  one question at a time: problem, done, scope, constraints, edge cases, priority
+guided     one question at a time, 2-4 options + type your own:
+interview  problem, done, scope, constraints, edge cases, priority
   |
   v
-play back  short brief; repeat until the developer agrees
+sync check "my understanding" + "I am guessing"; in sync / fix points / re-explain
+  |        repeat until in sync
   |
   v
 slice      vertical slices, one PR each, dependency ordered
