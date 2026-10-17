@@ -1,6 +1,6 @@
 ---
 name: idea-to-issues
-description: Turn a developer's rough idea into well-scoped GitHub issues through a guided requirements conversation: choose-or-type questions, understanding checks until agent and developer are in sync, then slicing and issue creation. Issues get acceptance criteria, dependencies, and the queue label (default ready-for-agent) so issue-orchestration can pick them up. Use when the user wants to turn an idea, feature, or project into issues or tickets.
+description: "Turn a developer's rough idea into well-scoped GitHub issues through a guided requirements conversation: choose-or-type questions, understanding checks until agent and developer are in sync, then slicing and issue creation. Issues get acceptance criteria, dependencies, and the queue label (default ready-for-agent) so issue-orchestration can pick them up. Use when the user wants to turn an idea, feature, or project into issues or tickets."
 ---
 
 # Idea to Issues
